@@ -1,15 +1,44 @@
 import React, { Component } from 'react'
-import './css/login.less'
+import {connect} from "react-redux";
+import {createSaveUserInfoAction} from "../../redux/action_creators/login_action"
+import {reqLogin} from "../../api/index";
+import './css/login.less';
 import logo from './images/logo.png'
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
+import { Redirect } from 'react-router';
 const {Item} = Form;
+
+@connect(
+  state=>({isLogin:state.userInfo.isLogin}),
+  {
+    saveUserInfo:createSaveUserInfoAction,
+  }
+)
+@Form.create()
 class Login extends Component {
   handleSubmit = (event) => {
     //点击登录按钮的回调
     event.preventDefault();//阻止默认事件--禁止form表单提交---提供ajax发送请求
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async(err,value) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const {username,password}=value;
+        // console.log(values)
+        // const {username,password}=value;
+        // console.log({username,password})
+        let result=await reqLogin(username,password);
+        const {status,msg,data}=result;
+        if(status===0){
+          console.log(data);
+          this.props.saveUserInfo(data);
+          this.props.history.replace("/admin")
+         
+        }else{
+          message.warning(msg,1);
+        }
+        
+        // console.log('Received values of form: ', values);
+      }else{
+        message.error("表单输入有误，请检查")
       }
     });
   }
@@ -27,7 +56,12 @@ class Login extends Component {
     }
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {getFieldDecorator} = this.props.form;
+    const {isLogin} =this.props;
+     if(isLogin){
+      //  如果已经登录了
+      return <Redirect to="/admin"/>
+     }
     return(
       <div className="login">
         <header>
@@ -48,7 +82,7 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
               {
-              getFieldDecorator('username', {
+              getFieldDecorator('username',{
              rules: [
                   { required: true, message: '用户名必须输入！' },
                   { min: 4, message: '必须大于等于4位！' },
@@ -64,8 +98,8 @@ class Login extends Component {
             </Item>
             <Item>
               {
-              getFieldDecorator('password', {
-                rules: [{ validator:this.pwdValidator}],
+              getFieldDecorator('password',{
+                rules: [{validator:this.pwdValidator}],
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -85,4 +119,11 @@ class Login extends Component {
     )
   }
 }
-export default Form.create()(Login)
+
+export default Login;
+// export default connect(
+//   state=>({isLogin:state.userInfo.isLogin}),
+//   {
+//     saveUserInfo:createSaveUserInfoAction,
+//   }
+// )(Form.create()(Login))
