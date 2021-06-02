@@ -1,0 +1,46 @@
+.header {
+  height: 80px;
+  background-color: white;
+}
+.header .header-top {
+  height: 40px;
+  border-bottom: 1px solid #1DA57A;
+  text-align: right;
+  line-height: 40px;
+}
+.header .header-top .username {
+  margin: 0px 0px 0px 10px;
+}
+.header .header-bottom {
+  height: 40px;
+  display: flex;
+}
+.header .header-bottom .header-bottom-left {
+  position: relative;
+  text-align: center;
+  line-height: 40px;
+  width: 25%;
+  font-size: 20px;
+}
+.header .header-bottom .header-bottom-left::after {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: 40px;
+  content: '';
+  border-top: 20px solid white;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+}
+.header .header-bottom .header-bottom-right {
+  width: 75%;
+  text-align: right;
+  line-height: 40px;
+  padding-right: 20px;
+}
+.header .header-bottom .header-bottom-right img {
+  width: 30px;
+  height: 20px;
+  margin: 0px 8px;
+}

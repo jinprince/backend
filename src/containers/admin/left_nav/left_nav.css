@@ -1,0 +1,10 @@
+.nav_header {
+  text-align: center;
+  height: 80px;
+  align-items: center;
+}
+.nav_header h1 {
+  margin-top: 5px;
+  color: white;
+  font-size: 20px;
+}

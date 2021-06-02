@@ -30,7 +30,7 @@ class Login extends Component {
         if(status===0){
           console.log(data);
           this.props.saveUserInfo(data);
-          this.props.history.replace("/admin")
+          this.props.history.replace("/admin/home")
          
         }else{
           message.warning(msg,1);
