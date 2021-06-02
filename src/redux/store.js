@@ -7,4 +7,5 @@ import reducers from "./reducers"
 import thunk from "redux-thunk";
 //引入redux devtoots-extension 用于redux开发调试工具的运行。
 import {composeWithDevTools} from "redux-devtools-extension";
+
 export default createStore(reducers,composeWithDevTools(applyMiddleware(thunk)));

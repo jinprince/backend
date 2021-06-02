@@ -13,7 +13,11 @@ const instance=axios.create({
 instance.interceptors.request.use((config)=>{
     NProgress.start();
     const {token}=store.getState().userInfo;
-    if(token) config.headers.Authorization="atguigu_"+token;
+    // console.log(token);
+    if (token) {
+        // config当前请求的配置
+        config.headers['Authorization'] = 'atguigu_' + token
+      }
     const {method,data}=config;
     if(method.toLowerCase()==="post"){
         if(data instanceof Object){
@@ -38,7 +42,9 @@ instance.interceptors.response.use((response)=>{
     if(error.response.status===401){
         message.error("身份已过期,请重新登录",1);
         //分发一个action
-        store.dispatch(createDeleteUserInfoAction());
+        // store.dispatch(createDeleteUserInfoAction());
+    }else{
+        message.error(error.message,1)
     }
     // message.error(error.message,1);
     return new Promise(()=>{})

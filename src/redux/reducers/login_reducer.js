@@ -2,12 +2,12 @@ import {SAVE_USER_INFO,DELETE_USER_INFO} from "../action_types";
 
 let user =JSON.parse(localStorage.getItem("user"));
 let token=localStorage.getItem("token");
-let isLogin=user&&token?true:false;
+console.log(user,token)
 
 let initState={
     user:user||'',
     token:token||'',
-    isLogin:isLogin
+    isLogin:user&&token?true :false
 };
 
 export default function test(preState=initState,action){

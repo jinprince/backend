@@ -9,3 +9,6 @@ export const WEATHERKEY="dKpDlIBfa027cdc216ac5b57dbdcee408698ea9d4f1e143";
 
 //天气接口的城市ID
 export const CITYID="4403"
+
+//分页
+export const PAGESIZE=5

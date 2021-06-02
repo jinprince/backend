@@ -1,7 +1,6 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
 import { Redirect,Route,Switch} from 'react-router';
-import {reqCategoryList} from "../../api"
 import {createDeleteUserInfoAction} from "../../redux/action_creators/login_action"
 import "../admin/css/admin.less";
 import Header from './header/header'
@@ -30,11 +29,6 @@ class Admin extends Component{
 //在render里，若想实现跳转，最好用<Redirect></Redirect>
 logout =()=>{
      this.props.deleteUserInfo();
-}
-getCategory=()=>{
-  reqCategoryList().then(res=>{
-    console.log(res)
-  })
 }
   render(){
     const {isLogin}=this.props.userInfo;
@@ -65,7 +59,6 @@ getCategory=()=>{
             </Content>
             <Footer className="footer">
                推荐使用谷歌浏览器，获取最佳用户体验
-               <button onClick={this.getCategory}>获取商品列表</button>
             </Footer>
       </Layout>
     </Layout>
