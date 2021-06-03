@@ -7,6 +7,8 @@ import Header from './header/header'
 import Home from "../../components/home/home";
 import Category from "../category/category";
 import Product from "../product/product";
+import Detail from "../product/detail";
+import AddUpdate from "../product/add_update";
 import User from '../user/user';
 import Role from "../role/role";
 import Bar from "../bar/bar"
@@ -48,7 +50,10 @@ logout =()=>{
               <Switch>
               <Route path="/admin/home" component={Home}></Route>
               <Route path="/admin/prod_about/category" component={Category}></Route>
-              <Route path="/admin/prod_about/product" component={Product}></Route>
+              <Route path="/admin/prod_about/product" component={Product} exact></Route>
+              <Route path="/admin/prod_about/product/detail/:id" component={Detail}></Route>
+              <Route path="/admin/prod_about/product/add_update" component={AddUpdate} exact></Route>
+              <Route path="/admin/prod_about/product/add_update/:id" component={AddUpdate}></Route>
               <Route path="/admin/user" component={User}></Route>
               <Route path="/admin/role" component={Role}></Route>
               <Route path="/admin/charts/bar" component={Bar}></Route>

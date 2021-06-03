@@ -1,19 +1,32 @@
 import React, { Component } from 'react';
 import { Card,Button,Icon,Select,Input,Table, message } from 'antd';
 import {PAGESIZE} from "../../config/index"
-import {reqProductList,reqUpdateProductStatus} from "../../api";
+import {reqProductList,reqUpdateProductStatus,reqProductSearch} from "../../api";
 const { Option } = Select;
 
 class Product extends Component {
     state={
         productList:[],
         total:'',
-        current:1
+        current:1,
+        keyWord:'',
+        searchType:''
     }
+    componentDidMount(){
+        this.getProductList();
+      }
         getProductList=async(number=1)=>{
-            let result=await reqProductList(number,PAGESIZE)
-            console.log(result)
-               const {status,msg,data}=result;
+            let result
+            if(this.isSearch){
+                
+                const {searchType,keyWord}=this.state;
+                 result=await reqProductSearch(number,PAGESIZE,searchType,keyWord);
+                 console.log(result)
+            }else{
+                 result=await reqProductList(number,PAGESIZE)
+        }
+            // console.log(result)
+               const {status,data}=result;
                if(status===0){
                     this.setState({
                         productList:data.list,
@@ -21,11 +34,11 @@ class Product extends Component {
                         current:data.pageNum
                        
                     })
+                }else{
+                    message.error("初始化商品失败",1)
                 }
         }
-   componentDidMount(){
-     this.getProductList();
-   }
+   
    updateProdStatus=async({_id,status})=>{
        let productList=[...this.state.productList];
       if(status===1) status=2
@@ -47,6 +60,25 @@ class Product extends Component {
     }else{
         message.error("更新商品状态失败")
     }
+   }
+   search=()=>{
+       this.isSearch=true;
+       this.getProductList()
+    //    const {keyWord,searchType,current}=this.state;
+    // //    console.log(pageNum,pageSize,searchType,keyWord)
+    // let result=await reqProductSearch(current,PAGESIZE,searchType,keyWord);
+    // const {status,msg,data}=result;
+    // console.log(result.data.total)
+    // if(status===0){
+    //     message.success("搜索成功")
+    //     this.setState({
+    //         productList:data.list,
+    //         total:data.total
+    //     })
+    // }else{
+    //     message.error(msg,1)
+    // }
+    // console.log(result)
    }
 
     render() {
@@ -91,14 +123,14 @@ class Product extends Component {
             },
               {
                 title: '操作',
-                dataIndex: 'operate',
+                // dataIndex: 'operate',
                 key: 'operate',
                 align:"center",
                 width: "10%",
-                render:()=>{
+                render:(item)=>{
                     return (
                         <div>
-                            <Button type="link">详情</Button><br/>
+                            <Button type="link" onClick={()=>{this.props.history.push(`/admin/prod_about/product/detail/${item._id}`)}}>详情</Button><br/>
                             <Button type="link">修改</Button>
                         </div>
                     )
@@ -108,19 +140,20 @@ class Product extends Component {
         return (
             <Card title={
                 <div>
-                <Select defaultValue="name">
-                    <Option value="name">按名称搜索</Option>
-                    <Option value="desc">按描述搜索</Option>
+                <Select defaultValue="productName" onChange={(value)=>{this.setState({searchType:value})}}>
+                    <Option value="productName">按名称搜索</Option>
+                    <Option value="productDesc">按描述搜索</Option>
                 </Select>
                 <Input
                 style={{margin:'0px 10px',width:'20%'}} 
                 placeholder="请输入搜索关键字"
                 allowClear
+                onChange={(e)=>{this.setState({keyWord:e.target.value})}}
                 />
-                <Button type="primary"><Icon type="search"/>搜索</Button>
+                <Button type="primary" onClick={this.search}><Icon type="search"/>搜索</Button>
                 </div>
             }
-             extra={<Button type="primary"><Icon type="plus-circle"/>添加商品</Button>}
+             extra={<Button type="primary"  onClick={()=>{this.props.history.push("/admin/prod_about/product/add_update")}}><Icon type="plus-circle"/>添加商品</Button>}
              >
            <Table 
            dataSource={dataSource} 

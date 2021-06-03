@@ -16,3 +16,10 @@ export const reqProductList=(pageNum,pageSize)=>myAxios.get(`${BASE_URL}/manage/
 
 //更新商品状态
 export const reqUpdateProductStatus=(productId,status)=>myAxios.post(`${BASE_URL}/manage/product/updateStatus`,{productId,status})
+
+//搜索商品列表
+export const reqProductSearch=(pageNum,pageSize,searchType,keyWord)=>
+{
+    // console.log(pageNum,pageSize,searchType,keyWord)
+return myAxios.get(`${BASE_URL}/manage/product/search`,{params:{[searchType]:keyWord,pageNum,pageSize}})
+}
