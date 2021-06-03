@@ -82,7 +82,6 @@ class Header extends Component {
         }
         componentWillUnmount(){
             clearInterval(this.timeID);
-            screenfull.off('change', this.change)
         }
 
      //点击退出登录的回调

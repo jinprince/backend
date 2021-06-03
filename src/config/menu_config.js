@@ -25,7 +25,6 @@ export default[
       },
     ]
   },
-
   {
     title: '用户管理',
     key: 'user',
@@ -38,7 +37,6 @@ export default[
     icon: 'safety',
     path: '/admin/role'
   },
-
   {
     title: '图形图表',
     key: 'charts',

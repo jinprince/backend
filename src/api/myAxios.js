@@ -15,9 +15,11 @@ instance.interceptors.request.use((config)=>{
     const {token}=store.getState().userInfo;
     // console.log(token);
     if (token) {
+        // console.log("金明星")
         // config当前请求的配置
-        config.headers['Authorization'] = 'atguigu_' + token
+        config.headers['Authorization']=`atguigu_${token}`;
       }
+    //   console.log(config.headers['Authorization'])
     const {method,data}=config;
     if(method.toLowerCase()==="post"){
         if(data instanceof Object){
@@ -42,7 +44,7 @@ instance.interceptors.response.use((response)=>{
     if(error.response.status===401){
         message.error("身份已过期,请重新登录",1);
         //分发一个action
-        // store.dispatch(createDeleteUserInfoAction());
+        store.dispatch(createDeleteUserInfoAction());
     }else{
         message.error(error.message,1)
     }

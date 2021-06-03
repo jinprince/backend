@@ -17,6 +17,17 @@ class Category extends Component {
     componentDidMount() {
         this.getCategoryList();
     }
+    
+    //获取商品分类列表
+    getCategoryList = async () => {
+      let result = await reqCategoryList();
+      this.setState({
+          isLoading:false
+      })
+      let { status, data, msg } = result;
+      if (status === 0) this.setState({ categoryList: data.reverse()})
+      else message.error(msg, 1)
+  }
     //增加分类
       toAdd=async(value)=>{
           let result=await reqAddCategory(value.categoryName);
@@ -51,16 +62,6 @@ class Category extends Component {
 
       }
 
-    //获取商品分类列表
-    getCategoryList = async () => {
-        let result = await reqCategoryList();
-        this.setState({
-            isLoading:false
-        })
-        let { status, data, msg } = result;
-        if (status === 0) this.setState({ categoryList: data.reverse()})
-        else message.error(msg, 1)
-    }
     //弹框
     //用于新增弹框
     //点击
