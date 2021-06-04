@@ -26,3 +26,9 @@ return myAxios.get(`${BASE_URL}/manage/product/search`,{params:{[searchType]:key
 
 //根据商品ID获取商品
 export const reqProdById=(productId)=>myAxios.get(`${BASE_URL}/manage/product/info`,{params:{productId}})
+
+//删除图片
+export const reqremovePicture=(name)=>myAxios.post(`${BASE_URL}/manage/img/delete`,{name})
+
+//添加商品
+export const reqProductAdd=({categoryId,name,desc,price,detail,imgs})=>myAxios.post(`${BASE_URL}/manage/product/add`,{categoryId,name,desc,price,detail,imgs})

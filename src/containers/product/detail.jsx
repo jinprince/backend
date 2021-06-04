@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Card,Icon,List, message } from 'antd';
+
+
 import './detail.less'
 import { connect } from 'react-redux';
-import {reqProdById} from "../../api"
+import {reqCategoryList, reqProdById} from "../../api"
 const {Item} =List;
 
 @connect(
@@ -20,14 +22,28 @@ class Detail extends Component {
         detail:'',
         imgs:[],
         name:'',
-        price:''
+        price:'',
+        isLoading:true
     }
     getProdById=async(id)=>{
-
         let result=await reqProdById(id);
         const {status,data,msg}=result
-        if(status===0) this.setState({...data})
+        if(status===0){
+            this.categoryId=data.categoryId
+            this.setState({...data})
+        }
         else message.error(msg)
+    }
+    getCateoryList=async()=>{
+        let result =await reqCategoryList();
+        const {status,data,msg}=result;
+        if(status===0){
+            let result=data.find((item)=>{
+                return item._id===this.categoryId;
+            })
+            if(result) this.setState({categoryName:result.name,isLoading:false})
+            else message.error(msg)
+        }
     }
     
 
@@ -36,7 +52,7 @@ class Detail extends Component {
         // console.log(this.props,this.props.productList)
         const reduxProdList=this.props.productList;
         const reduxCateList=this.props.categoryList;
-        if(reduxProdList.length!==0){
+        if(reduxProdList.length){
         let result=reduxProdList.find((item)=>{
             return item._id===id;
         })
@@ -52,12 +68,12 @@ class Detail extends Component {
         this.getProdById(id)
     }
     if(reduxCateList.length){
-        let result=reduxCateList.find((item)=>{
-            return item._id===this.categoryId
-        })
-        this.setState({categoryName:result.name})
+      let result=reduxCateList.find((item)=>item._id===this.categoryId)
+      this.setState({categoryName:result.name,isLoading:false})
+    }else{
+        this.getCateoryList()
     }
-    }
+}
     render() {
         const {categoryName,desc,detail,imgs,name,price}=this.state;
         return (
@@ -71,7 +87,7 @@ class Detail extends Component {
                 <span>商品列表</span>
                 </Button>
             </div>}>
-             <List>
+             <List loading={this.state.isLoading}>
                  <Item>
                      <span className="prod-name">商品名称: </span>
                      <span>{name}</span>
