@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { Card,Button,Icon,Select,Input,Table, message } from 'antd';
 import {PAGESIZE} from "../../config/index"
+import {connect} from "react-redux";
+import {createSaveProductAction} from "../../redux/action_creators/product_action";
 import {reqProductList,reqUpdateProductStatus,reqProductSearch} from "../../api";
 const { Option } = Select;
 
+@connect(
+    state=>({productList:state.productList}),
+    {saveProduct:createSaveProductAction}
+
+)
 class Product extends Component {
     state={
         productList:[],
@@ -15,7 +22,7 @@ class Product extends Component {
     componentDidMount(){
         this.getProductList();
       }
-        getProductList=async(number=1)=>{
+    getProductList=async(number=1)=>{
             let result
             if(this.isSearch){
                 
@@ -34,6 +41,9 @@ class Product extends Component {
                         current:data.pageNum
                        
                     })
+                    //把获取得商品列表保存道redux中
+                    this.props.saveProduct(data.list)
+
                 }else{
                     message.error("初始化商品失败",1)
                 }

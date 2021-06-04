@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import {connect} from "react-redux";
+import {createSaveCategoryListAction} from "../../redux/action_creators/category_action";
 import {Button, Card, Icon, message, Table, Modal,Form,Input } from 'antd';
 import { reqAddCategory, reqCategoryList,reqUpdateCategory } from '../../api';
 import { PAGESIZE } from "../../config/index";
 const {Item}=Form;
 
+@connect(
+  state=>({ categroyList:state.categroyList}),
+  {saveCategory:createSaveCategoryListAction}
+)
 @Form.create()
 class Category extends Component {
     state = {
@@ -16,6 +22,7 @@ class Category extends Component {
     }
     componentDidMount() {
         this.getCategoryList();
+        
     }
     
     //获取商品分类列表
@@ -25,7 +32,10 @@ class Category extends Component {
           isLoading:false
       })
       let { status, data, msg } = result;
-      if (status === 0) this.setState({ categoryList: data.reverse()})
+      if (status === 0) {
+        this.setState({ categoryList: data.reverse()})
+        this.props.saveCategory(data)
+      }
       else message.error(msg, 1)
   }
     //增加分类

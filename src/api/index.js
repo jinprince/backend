@@ -23,3 +23,6 @@ export const reqProductSearch=(pageNum,pageSize,searchType,keyWord)=>
     // console.log(pageNum,pageSize,searchType,keyWord)
 return myAxios.get(`${BASE_URL}/manage/product/search`,{params:{[searchType]:keyWord,pageNum,pageSize}})
 }
+
+//根据商品ID获取商品
+export const reqProdById=(productId)=>myAxios.get(`${BASE_URL}/manage/product/info`,{params:{productId}})
