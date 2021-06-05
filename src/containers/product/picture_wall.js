@@ -25,6 +25,18 @@ function getBase64(file) {
       })
       return result;
   }
+//
+setFileList=(imgArr)=>{
+  let fileList=[]
+  imgArr.forEach((item,index)=>{
+    fileList.push({uid:-index,name:item,url:`${BASE_URL}/upload/${item}`});
+  })
+  this.setState({fileList})
+}
+
+
+
+
 
   handleCancel = () => this.setState({ previewVisible: false });
 

@@ -108,7 +108,7 @@ class Detail extends Component {
                      <span className="prod-name">商品图片: </span>
                      <span>{
                          imgs.map((item,index)=>{
-                             return<img key={index}src={`/upload/${item}`} alt="商品图片"/>
+                             return<img key={index}src={`/upload/${item}`} alt="商品图片" style={{width:'200px'}}/>
                          })
                          }</span>
                  </Item> 

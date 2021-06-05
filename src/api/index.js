@@ -32,3 +32,15 @@ export const reqremovePicture=(name)=>myAxios.post(`${BASE_URL}/manage/img/delet
 
 //添加商品
 export const reqProductAdd=({categoryId,name,desc,price,detail,imgs})=>myAxios.post(`${BASE_URL}/manage/product/add`,{categoryId,name,desc,price,detail,imgs})
+
+// 更新商品
+export const reqUpdateProd=(productObj)=>myAxios.post(`${BASE_URL}/manage/product/update`,{...productObj})
+
+//请求列表用户所有数据
+export const reqRoleList=()=>myAxios.get(`${BASE_URL}/manage/role/list`)
+
+//添加角色
+export const reqRoleAdd=(roleName)=>myAxios.post(`${BASE_URL}/manage/role/add`,{roleName})
+
+// 更新角色(给角色设置权限)/manage/role/update
+export const reqAuthRole = (roleObj)=> myAxios.post(`${BASE_URL}/manage/role/update`,{...roleObj,auth_time:Date.now()})
