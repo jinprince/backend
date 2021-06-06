@@ -32,6 +32,8 @@ class Role extends Component{
      console.log(result)
      if(status===0){
          this.setState({roleList:data})
+     }else{
+       message.error(msg,1)
      }
  }
 

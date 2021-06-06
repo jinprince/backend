@@ -8,15 +8,31 @@ import logo from "../../../static/img/logo.png"
 import './left_nav.less';
 const { SubMenu } = Menu;
 @connect(
-    state=>({}),
+    state=>({menu:state.userInfo.user.role.menus,
+            username:state.userInfo.user.username
+    }),
     {saveTitle:createSaveTitleAction}
 )
 @withRouter
 class LeftNav extends Component {
+
+  
+        hasAuth=(item)=>{
+            const {menu,username}=this.props;
+            if(username==="admin") return true
+            else if(!item.children){
+                return menu.find((item2)=>{return item2===item.key})
+            }else if(item.children){
+                return item.children.some((item3)=>{return menu.indexOf(item3.key)!==-1})
+            }
+        }
+
+
     createMenu=(target)=>{
         // console.log(target)
         return target.map((item)=>{
             // console.log(item.children)
+           if(this.hasAuth(item)){
             if(!item.children){
                 return (
                  <Menu.Item key={item.key} onClick={()=>{this.props.saveTitle(item.title)}}>
@@ -41,6 +57,7 @@ class LeftNav extends Component {
               </SubMenu>
                 )
             }
+           }
         })
     }
     render() {

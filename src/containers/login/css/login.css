@@ -16,7 +16,9 @@ body #root .app {
 .login {
   width: 100%;
   height: 100%;
-  background-image: url('../images/bg.jpg');
+  background: url('../images/bg.jpg') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 .login header {
   display: flex;
